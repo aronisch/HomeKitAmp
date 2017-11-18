@@ -8,7 +8,7 @@ HomeKitAmp: HomeKitAmp.o
 HomeKitAmp.o: ./RF24/RF24.h ./RF24Network/RF24Network.h
 
 %.o: %.c
-	$(CC) $(CCFLAGS) -c $< -o $@
+	$(CC) $(CCFLAGS) $(LDFLAGS) -c $< -o $@
 
 clean:
 	rm -f *.o *~
