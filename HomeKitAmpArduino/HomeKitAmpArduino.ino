@@ -121,13 +121,11 @@ void sendNewState(uint16_t delay){
 	Serial.print(", delay : ");
 	Serial.print(delay);
 	Serial.println("ms");
-	bool ok = network.write(header, &answer, sizeof(answer));
-	if (ok) {
-		Serial.println("sendNewStatus - success");
-	}
-	else {
+	while (!(network.write(header, &answer, sizeof(answer)))) {
 		Serial.println("sendNewStatus - fail");
 	}
+	Serial.println("sendNewStatus - success");
+		
 }
 
 void setup(void)
