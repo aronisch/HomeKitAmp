@@ -1,6 +1,6 @@
 CC=gcc
 CCFLAGS=-Wall -Ofast -mfpu=vfp -mfloat-abi=hard -march=armv7-a -mtune=arm1176jzf-s -std=c++0x
-LDFLAGS=-lrf24-bcm -lrf24network -lstdc++
+LDFLAGS=-lrf24network -lrf24 -lstdc++
 
 HomeKitAmp: HomeKitAmp.o
 	$(CC) $(CCFLAGS) $(LDFLAGS) $^ -o HomeKitAmp
