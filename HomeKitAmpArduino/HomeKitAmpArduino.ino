@@ -72,7 +72,7 @@ void checkRadioAction(void){
 		network.read(header, &request, sizeof(request));
 
 		Serial.print("Received request with action :");
-		Serial.println(request.action);
+		Serial.println(request.actionReq);
 		
 		switch(request.actionReq){
 			case POWER_UP:

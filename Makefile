@@ -12,4 +12,4 @@ HomeKitAmp.o: ./RF24/RF24.h ./RF24Network/RF24Network.h
 
 clean:
 	rm -f *.o *~
-	rm -f main
+	rm -f HomeKitAmp
