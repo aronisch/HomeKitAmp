@@ -154,7 +154,7 @@ void loop(void) {
 	network.update();               // Check the network regularly
 	debouncer.update();				// Update the Bounce instance
 
-	checkSwitchAction();
-	checkRadioAction();
+	checkSwitchAction();			//Check if the switch was toggled
+	checkRadioAction();				//Check if new instructions were received by radio
 	performPendingAction();
 }
