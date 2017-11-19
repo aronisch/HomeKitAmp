@@ -52,34 +52,33 @@ public:
 
 			Message m = fromNode.read();
 			if (m.name == "Instructions") {
+				request_t newReq;
+				RF24NetworkHeader header(/*to node*/ amp_node);
 				char instruction = m.data[0];
 				switch (instruction) {
-				case 'I':
-					request_t newReq = { POWER_UP };
-					RF24NetworkHeader header(/*to node*/ amp_node);
-					while (!(network.write(header, &newReq, sizeof(newReq)))) {
-						printf("Failed to send\n");
-					}
-					printf("Successfully sent\n");
-					break;
-				case 'O':
-					request_t newReq = { POWER_DOWN };
-					RF24NetworkHeader header(/*to node*/ amp_node);
-					while (!(network.write(header, &newReq, sizeof(newReq)))) {
-						printf("Failed to send\n");
-					}
-					printf("Successfully sent\n");
-					break;
-				case 'S':
-					request_t newReq = { UPDATE_STATE };
-					RF24NetworkHeader header(/*to node*/ amp_node);
-					while (!(network.write(header, &newReq, sizeof(newReq)))) {
-						printf("Failed to send\n");
-					}
-					printf("Successfully sent\n");
-					break;
-				default:
-					break;
+					case 'I':
+						newReq = { POWER_UP };
+						while (!(network.write(header, &newReq, sizeof(newReq)))) {
+							printf("Failed to send\n");
+						}
+						printf("Successfully sent\n");
+						break;
+					case 'O':
+						newReq = { POWER_DOWN };
+						while (!(network.write(header, &newReq, sizeof(newReq)))) {
+							printf("Failed to send\n");
+						}
+						printf("Successfully sent\n");
+						break;
+					case 'S':
+						newReq = { UPDATE_STATE };
+						while (!(network.write(header, &newReq, sizeof(newReq)))) {
+							printf("Failed to send\n");
+						}
+						printf("Successfully sent\n");
+						break;
+					default:
+						break;
 				}
 			}
 		}
