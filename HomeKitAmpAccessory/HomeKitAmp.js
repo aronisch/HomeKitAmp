@@ -5,10 +5,10 @@ var addon_path = path.join(__dirname, "build/Release/HomeKitAmpAddon");
 
 const hkamp = worker(addon_path);
 
-var Accessory = require('./HAP-NodeJS').Accessory;
-var Service = require('./HAP-NodeJS').Service;
-var Characteristic = require('./HAP-NodeJS').Characteristic;
-var uuid = require('../HAP-NodeJS').uuid;
+var Accessory = require('./node_modules/hap-nodejs').Accessory;
+var Service = require('./node_modules/hap-nodejs').Service;
+var Characteristic = require('./node_modules/hap-nodejs').Characteristic;
+var uuid = require('./node_modules/hap-nodejs').uuid;
 var err = null; // in case there were any problems
 
 hkamp.from.on('status', function (value) {

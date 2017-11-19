@@ -1,8 +1,8 @@
 var path = require('path');
 var storage = require('node-persist');
-var uuid = require('./HAP-NodeJS').uuid;
-var Accessory = require('./HAP-NodeJS').Accessory;
-var accessoryLoader = require('./HAP-NodeJS/lib/AccessoryLoader');
+var uuid = require('./node_modules/hap-nodejs').uuid;
+var Accessory = require('./node_modules/hap-nodejs').Accessory;
+var accessoryLoader = require('./node_modules/hap-nodejs/lib/AccessoryLoader');
 
 console.log("HAP-NodeJS starting...");
 
