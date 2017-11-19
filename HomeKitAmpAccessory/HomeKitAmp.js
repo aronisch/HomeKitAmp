@@ -1,14 +1,14 @@
-const worker = require("streaming-worker");
+const worker = require("../NodeJSAddon/node_modules/streaming-worker");
 const path = require("path");
 
-var addon_path = path.join(__dirname, "build/Release/HomeKitAmpAddon");
+var addon_path = path.join(__dirname, "../NodeJSAddon/build/Release/HomeKitAmpAddon");
 
 const hkamp = worker(addon_path);
 
-var Accessory = require('./node_modules/hap-nodejs').Accessory;
-var Service = require('./node_modules/hap-nodejs').Service;
-var Characteristic = require('./node_modules/hap-nodejs').Characteristic;
-var uuid = require('./node_modules/hap-nodejs').uuid;
+var Accessory = require('../node_modules/hap-nodejs').Accessory;
+var Service = require('../node_modules/hap-nodejs').Service;
+var Characteristic = require('../node_modules/hap-nodejs').Characteristic;
+var uuid = require('../node_modules/hap-nodejs').uuid;
 var err = null; // in case there were any problems
 
 hkamp.from.on('status', function (value) {
