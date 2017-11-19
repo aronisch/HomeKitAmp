@@ -1,5 +1,5 @@
 var path = require('path');
-var storage = require('node-persist');
+var storage = require('./node_modules/hap-nodejs/node_modules/node-persist');
 var uuid = require('./node_modules/hap-nodejs').uuid;
 var Accessory = require('./node_modules/hap-nodejs').Accessory;
 var accessoryLoader = require('./node_modules/hap-nodejs/lib/AccessoryLoader');
