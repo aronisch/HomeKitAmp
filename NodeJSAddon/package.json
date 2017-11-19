@@ -1,0 +1,10 @@
+{
+  "name": "HomeKitAmp",
+  "version": "1.0",
+  "gypfile": true,
+  "dependencies": {
+    "nan": "*",
+    "streaming-worker-sdk": "*",
+    "hap-nodejs": "*"
+  }
+}
