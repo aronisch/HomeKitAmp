@@ -34,7 +34,10 @@ public:
 		// Setup for GPIO 22 CE and CE1 CSN with SPI Speed @ 8Mhz
 		RF24 radio(RPI_V2_GPIO_P1_22, BCM2835_SPI_CS0, BCM2835_SPI_SPEED_8MHZ);
 		RF24Network network(radio);
-
+		radio.begin();
+		delay(5);
+		network.begin(/*channel*/ 90, /*node address*/ rpi_node);
+		radio.printDetails();
 		while (!closed()) {
 			network.update();
 			while (network.available()) {     // Check for incoming radio data

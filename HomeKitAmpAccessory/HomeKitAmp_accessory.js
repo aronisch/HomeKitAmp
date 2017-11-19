@@ -1,7 +1,7 @@
 const worker = require("../NodeJSAddon/node_modules/streaming-worker");
 const path = require("path");
 
-var addon_path = path.join(__dirname, "../NodeJSAddon/build/Release/HomeKitAmpAddon");
+var addon_path = path.join(__dirname, "../NodeJSAddon/build/Release/HomeKitAmp");
 
 const hkamp = worker(addon_path);
 
@@ -13,7 +13,7 @@ var err = null; // in case there were any problems
 
 hkamp.from.on('status', function (value) {
     var isOn = value == "I" ? true : false;
-    AMPLIFIER.setPowerOn(isOn);
+    AMPLIFIER.powerOn = isOn;
 });
 
 hkamp.from.on('delay', function (value) {
