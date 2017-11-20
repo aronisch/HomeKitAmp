@@ -45,8 +45,8 @@ public:
 				answer_t answer;
 				network.read(header, &answer, sizeof(answer));
 
-				printf("Received answer with status :");
-				printf("Status : %c, delay : %dms", answer.currentState, answer.delay);
+				printf("Received answer with status : ");
+				printf("Status : %c, delay : %d ms\n", answer.currentState, answer.delay);
 				Message tosendStatus("status", std::to_string(answer.currentState));
 				Message tosendDelay("delay", std::to_string(answer.delay));
 				writeToNode(progress, tosendStatus);
