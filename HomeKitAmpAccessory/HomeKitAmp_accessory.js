@@ -13,12 +13,13 @@ var err = null; // in case there were any problems
 
 hkamp.from.on('status', function (value) {
     var isOn = value == "I" ? true : false;
+    console.log("Set new status to %s", value);
     AMPLIFIER.powerOn = isOn;
     outlet.getService(Service.Outlet)
         .getCharacteristic(Characteristic.On)
-        .on('set', function (isOn,callback) {
+        .on('set', function (isOn) {
             var err = null; // in case there were any problems
-            console.log("Set new status to %s", value);
+            console.log("In outlet : Set new status to %s", value);
             callback(err);
         })
 });
@@ -31,17 +32,17 @@ hkamp.from.on('delay', function (value) {
 // here's a fake hardware device that we'll expose to HomeKit
 var AMPLIFIER = {
     setPowerOn: function (on) {
-        console.log("Turning the amplifier %s!...", on ? "on" : "off");
+        console.log("Turning the amplifier %s", on ? "on" : "off");
         if (on) {
             hkamp.to.emit("Instructions", 'I');
             AMPLIFIER.powerOn = true;
             if (err) { return console.log(err); }
-            console.log("...amplifier is now on.");
+            console.log("Sent POWER_UP");
         } else {
             hkamp.to.emit("Instructions", 'O');
             AMPLIFIER.powerOn = false;
             if (err) { return console.log(err); }
-            console.log("...amplifier is now off.");
+            console.log("Sent POWER_DOWN");
         }
     },
     identify: function () {
@@ -91,7 +92,8 @@ outlet.getService(Service.Outlet)
         // this event is emitted when you ask Siri directly whether your light is on or not. you might query
         // the light hardware itself to find this out, then call the callback. But if you take longer than a
         // few seconds to respond, Siri will give up.
-
+        
+        hkamp.to.emit("Instructions", 'S');
         var err = null; // in case there were any problems
 
         if (AMPLIFIER.powerOn) {
