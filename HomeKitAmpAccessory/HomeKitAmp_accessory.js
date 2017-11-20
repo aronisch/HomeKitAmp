@@ -16,12 +16,7 @@ hkamp.from.on('status', function (value) {
     console.log("Set new status to %s", value);
     AMPLIFIER.powerOn = isOn;
     outlet.getService(Service.Outlet)
-        .getCharacteristic(Characteristic.On)
-        .on('set', function (isOn) {
-            var err = null; // in case there were any problems
-            console.log("In outlet : Set new status to %s", value);
-            callback(err);
-        })
+        .setCharacteristic(Characteristic.On, isOn);
 });
 
 hkamp.from.on('delay', function (value) {
