@@ -14,6 +14,13 @@ var err = null; // in case there were any problems
 hkamp.from.on('status', function (value) {
     var isOn = value == "I" ? true : false;
     AMPLIFIER.powerOn = isOn;
+    outlet.getService(Service.Outlet)
+        .getCharacteristic(Characteristic.On)
+        .on('set', function (isOn,callback) {
+            var err = null; // in case there were any problems
+            console.log("Set new status to %s", value);
+            callback(err);
+        })
 });
 
 hkamp.from.on('delay', function (value) {
@@ -55,11 +62,10 @@ outlet.username = "1A:2B:3C:4D:5D:FF";
 outlet.pincode = "031-45-154";
 
 // set some basic properties (these values are arbitrary and setting them is optional)
-outlet
-    .getService(Service.AccessoryInformation)
-    .setCharacteristic(Characteristic.Manufacturer, "AR")
-    .setCharacteristic(Characteristic.Model, "V1.0")
-    .setCharacteristic(Characteristic.SerialNumber, "A1S2NASF88EW");
+outlet.getService(Service.AccessoryInformation)
+      .setCharacteristic(Characteristic.Manufacturer, "AR")
+      .setCharacteristic(Characteristic.Model, "V1.0")
+      .setCharacteristic(Characteristic.SerialNumber, "A1S2NASF88EW");
 
 // listen for the "identify" event for this Accessory
 outlet.on('identify', function (paired, callback) {
@@ -69,20 +75,18 @@ outlet.on('identify', function (paired, callback) {
 
 // Add the actual outlet Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
-outlet
-    .addService(Service.Outlet, "Amplifier") // services exposed to the user should have "names" like "Fake Light" for us
-    .getCharacteristic(Characteristic.On)
-    .on('set', function (value, callback) {
+outlet.addService(Service.Outlet, "Amplificateur") // services exposed to the user should have "names" like "Fake Light" for us
+      .getCharacteristic(Characteristic.On)
+      .on('set', function (value, callback) {
         AMPLIFIER.setPowerOn(value);
         callback(); // Our fake Outlet is synchronous - this value has been successfully set
-    });
+});
 
 // We want to intercept requests for our current power state so we can query the hardware itself instead of
 // allowing HAP-NodeJS to return the cached Characteristic.value.
-outlet
-    .getService(Service.Outlet)
-    .getCharacteristic(Characteristic.On)
-    .on('get', function (callback) {
+outlet.getService(Service.Outlet)
+      .getCharacteristic(Characteristic.On)
+      .on('get', function (callback) {
 
         // this event is emitted when you ask Siri directly whether your light is on or not. you might query
         // the light hardware itself to find this out, then call the callback. But if you take longer than a
@@ -98,4 +102,4 @@ outlet
             console.log("Are we on? No.");
             callback(err, false);
         }
-    }); 
+}); 
