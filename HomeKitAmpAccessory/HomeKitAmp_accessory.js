@@ -1,6 +1,6 @@
 const worker = require("../NodeJSAddon/node_modules/streaming-worker");
 const path = require("path");
-
+require('console-stamp')(console, '[HH:MM:ss.l]');
 var addon_path = path.join(__dirname, "../NodeJSAddon/build/Release/HomeKitAmp");
 
 const hkamp = worker(addon_path);
@@ -9,33 +9,34 @@ var Accessory = require('../node_modules/hap-nodejs').Accessory;
 var Service = require('../node_modules/hap-nodejs').Service;
 var Characteristic = require('../node_modules/hap-nodejs').Characteristic;
 var uuid = require('../node_modules/hap-nodejs').uuid;
-var err = null; // in case there were any problems
+var err = null;
+
+hkamp.to.emit("Instructions", 'S');
 
 hkamp.from.on('status', function (value) {
     var isOn = value == "I" ? true : false;
     console.log("Set new status to %s", value);
     AMPLIFIER.powerOn = isOn;
     outlet.getService(Service.Outlet)
-        .setCharacteristic(Characteristic.On, isOn);
+        .getCharacteristic(Characteristic.On).updateValue(isOn);
 });
 
-hkamp.from.on('delay', function (value) {
+/*hkamp.from.on('delay', function (value) {
     console.log("Safety Delay :");
     console.log(value);
-});
+});*/
 
-// here's a fake hardware device that we'll expose to HomeKit
 var AMPLIFIER = {
     setPowerOn: function (on) {
         console.log("Turning the amplifier %s", on ? "on" : "off");
         if (on) {
             hkamp.to.emit("Instructions", 'I');
-            AMPLIFIER.powerOn = true;
+            //AMPLIFIER.powerOn = true;
             if (err) { return console.log(err); }
             console.log("Sent POWER_UP");
         } else {
             hkamp.to.emit("Instructions", 'O');
-            AMPLIFIER.powerOn = false;
+            //AMPLIFIER.powerOn = false;
             if (err) { return console.log(err); }
             console.log("Sent POWER_DOWN");
         }

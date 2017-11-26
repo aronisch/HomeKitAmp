@@ -21,8 +21,8 @@ typedef struct {                 // Structure of our request
 
 typedef struct {				   //Structure of our answer
 	char currentState;			   // ON => 'I', OFF => 'O'
-	//char actionStatusCode;	     //OK : 0 - Error : 1
 	uint16_t delay;				   //delay in s
+	unsigned long time;
 } answer_t;
 
 class HomeKitAmp : public StreamingWorker {
@@ -58,24 +58,29 @@ public:
 				request_t newReq;
 				RF24NetworkHeader header(/*to node*/ amp_node);
 				char instruction = m.data[0];
+				bool sent = false;
+				int attempt = 0;
 				switch (instruction) {
 					case 'I':
 						newReq = { POWER_UP };
-						while (!(network.write(header, &newReq, sizeof(newReq)))) {
+						while (!sent && attempt <= 10) {
+							sent = network.write(header, &newReq, sizeof(newReq));
 							printf("Failed to send\n");
 						}
 						printf("Successfully sent\n");
 						break;
 					case 'O':
 						newReq = { POWER_DOWN };
-						while (!(network.write(header, &newReq, sizeof(newReq)))) {
+						while (!sent && attempt <= 10) {
+							sent = network.write(header, &newReq, sizeof(newReq));
 							printf("Failed to send\n");
 						}
 						printf("Successfully sent\n");
 						break;
 					case 'S':
 						newReq = { UPDATE_STATE };
-						while (!(network.write(header, &newReq, sizeof(newReq)))) {
+						while (!sent && attempt <= 10) {
+							sent = network.write(header, &newReq, sizeof(newReq));
 							printf("Failed to send\n");
 						}
 						printf("Successfully sent\n");

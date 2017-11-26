@@ -29,8 +29,8 @@ typedef struct {                 // Structure of our request
 
 typedef struct {				   //Structure of our answer
 	char currentState;			   // ON => 'I', OFF => 'O'
-//	char actionStatusCode;				   //OK : 0 - Error : 1
 	uint16_t delay;				   //delay in s
+	unsigned long time;
 } answer_t;
 
 uint16_t powerUpAmp(void) {	  //Check the delay : if OK power on and return 0 else return delay time in ms
@@ -71,7 +71,8 @@ void checkRadioAction(void){
 		request_t request;
 		network.read(header, &request, sizeof(request));
 
-		Serial.print("Received request with action :");
+		Serial.print(millis());
+		Serial.print("ms - Received request with action :");
 		Serial.println(request.actionReq);
 		
 		switch(request.actionReq){
@@ -97,10 +98,13 @@ void performPendingAction(void){
 			break;
 		case UPDATE_STATE:
 			sendNewState(delay);
+			pendingAction = NONE;
 			break;
 		case POWER_UP:
 			delay = powerUpAmp();
-			sendNewState(delay);
+			if (delay == 0) {
+				sendNewState(delay);
+			}
 			break;
 		case POWER_DOWN:
 			powerDownAmp();
@@ -112,20 +116,30 @@ void performPendingAction(void){
 }
 
 void sendNewState(uint16_t delay){
+	RF24NetworkHeader header(rpi_node);
 	answer_t answer;
 	answer.currentState = activeRelay == 1 ? 'I' : 'O';
 	answer.delay = delay;
-	RF24NetworkHeader header(rpi_node);
-	Serial.print("sendNewStatus - currentState : ");
+	answer.time = millis();
+	Serial.print(answer.time);
+	Serial.print("ms - sendNewStatus - currentState : ");
 	Serial.print(answer.currentState);
 	Serial.print(", delay : ");
 	Serial.print(delay);
 	Serial.println("ms");
-	while (!(network.write(header, &answer, sizeof(answer)))) {
+	int attempt = 0;
+	bool sent = network.write(header, &answer, sizeof(answer));
+	while (!sent && attempt <=10) {
 		Serial.println("sendNewStatus - fail");
+		sent = network.write(header, &answer, sizeof(answer));
+		attempt++;
 	}
-	Serial.println("sendNewStatus - success");
-		
+	if (sent) {
+		Serial.print(millis());
+		Serial.print("ms - sendNewStatus packet created at ");
+		Serial.print(answer.time);
+		Serial.println(" - success");
+	}
 }
 
 void setup(void)
