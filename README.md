@@ -1,5 +1,6 @@
 # HomeKitAmp
-ARCHIVE : HomeKit + nRF24 Amp remote switch control (Abandoned version : see https://github.com/aronisch/PHAS/ for the new one)
+ARCHIVE : HomeKit + nRF24 Amp remote switch control (Abandoned version : see https://github.com/aronisch/PHAS/)
+
 Based on HAP-NodeJS from KhaosT and nRF24 Libraries from tmrh20
 
 Installation :
