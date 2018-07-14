@@ -1,6 +1,5 @@
 # HomeKitAmp
-HomeKit + nRF24 Amp remote switch control / Alarm Clock with Spotify playlist on the amp
-
+ARCHIVE : HomeKit + nRF24 Amp remote switch control (Abandoned version : see https://github.com/aronisch/PHAS/ for the new one)
 Based on HAP-NodeJS from KhaosT and nRF24 Libraries from tmrh20
 
 Installation :
